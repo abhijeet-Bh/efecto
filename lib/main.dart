@@ -1,4 +1,5 @@
 import 'package:efecto/core/theme.dart';
+import 'package:efecto/features/home/application/views/home_view.dart';
 import 'package:efecto/features/initialscreens/application/views/login_view.dart';
 import 'package:efecto/features/initialscreens/application/views/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       routes: {
         WelcomeScreen.routeName: (ctx) => const WelcomeScreen(),
         LoginView.routeName: (ctx) => const LoginView(),
+        HomeView.routeName: (ctx) => const HomeView(),
       },
     );
   }

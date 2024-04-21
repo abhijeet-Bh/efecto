@@ -4,4 +4,6 @@ class Assets {
   static const lockIcon = "assets/icons/lock_icon.svg";
   static const googleIcon = "assets/icons/google_icon.svg";
   static const appleIcon = "assets/icons/apple_icon.svg";
+  static const menuIcon = "assets/icons/menu_icon.svg";
+  static const homeEmptyIcon = "assets/icons/home_empty_icon.svg";
 }
