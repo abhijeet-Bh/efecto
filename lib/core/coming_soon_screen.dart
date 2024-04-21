@@ -18,7 +18,7 @@ class ComingSoonScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(
-              Assets.workInProgressIcon,
+              Assets.mainClockIcon,
               height: 100,
             ),
             const SizedBox(

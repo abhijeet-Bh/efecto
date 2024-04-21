@@ -24,31 +24,37 @@ class AppTheme {
   static const TextStyle primaryHeadingTextLarge = TextStyle(
     fontSize: 26,
     color: primaryColor,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w600,
+    fontFamily: "Akshar",
   );
   static const TextStyle primaryHeadingTextMedium = TextStyle(
     fontSize: 18,
     color: primaryColor,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w600,
+    fontFamily: "Akshar",
   );
   static const TextStyle primaryHeadingTextSmall = TextStyle(
     fontSize: 16,
     color: primaryColor,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w600,
+    fontFamily: "Akshar",
   );
 
   //Body
   static const TextStyle primaryBodyTextLarge = TextStyle(
-    fontSize: 16,
+    fontSize: 18,
     color: primaryColor,
+    fontFamily: "Akshar",
   );
   static const TextStyle primaryBodyTextMedium = TextStyle(
-    fontSize: 14,
+    fontSize: 16,
     color: primaryColor,
+    fontFamily: "Akshar",
   );
   static const TextStyle primaryBodyTextSmall = TextStyle(
-    fontSize: 12,
+    fontSize: 14,
     color: primaryColor,
+    fontFamily: "Akshar",
   );
 
   //Text Theme
