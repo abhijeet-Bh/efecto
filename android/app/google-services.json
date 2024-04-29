@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "877746962943",
+    "project_id": "efecto-c380e",
+    "storage_bucket": "efecto-c380e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877746962943:android:a9f204d08161f973d227ca",
+        "android_client_info": {
+          "package_name": "com.efecto.app.efecto"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf2E-c08iD4F_pw2Jfq4BVPmRj9FWmdjI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

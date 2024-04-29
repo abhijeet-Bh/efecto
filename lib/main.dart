@@ -2,9 +2,19 @@ import 'package:efecto/core/theme.dart';
 import 'package:efecto/features/home/application/views/home_view.dart';
 import 'package:efecto/features/initialscreens/application/views/login_view.dart';
 import 'package:efecto/features/initialscreens/application/views/welcome_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Firebase Initialisation
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
