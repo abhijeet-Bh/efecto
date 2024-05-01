@@ -4,6 +4,7 @@ import 'package:efecto/features/home/data/TaskData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../widgets/add_item_popup.dart';
 import '../widgets/date_list_widget.dart';
 import '../widgets/empty_todo_widget.dart';
 
@@ -83,11 +84,21 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 onTap: () {
                   setState(() {
-                    TaskData.taskList.add(TaskModel(
-                      title: "New Task",
-                      duration: 20,
-                      priority: Priority.MEDIUM,
-                    ));
+                    // TaskData.taskList.add(TaskModel(
+                    //   title: "New Task",
+                    //   duration: 20,
+                    //   priority: Priority.MEDIUM,
+                    // ));
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AddItemPopup(
+                          onAdd: (title, priority, duration, isComplete, date) {
+                            // Add item to the list
+                          },
+                        );
+                      },
+                    );
                   });
                 },
               ),
