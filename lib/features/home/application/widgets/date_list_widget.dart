@@ -22,8 +22,7 @@ class _DateListState extends State<DateList> {
       children: [
         InkWell(
           child: DateChips(
-            date: (DateTime.now().day - 2).toString(),
-            month: AppConstants.months[DateTime.now().month],
+            date: (DateTime.now().subtract(const Duration(days: 2))),
             isSelected: selectedIndex == 0,
           ),
           onTap: () {
@@ -34,8 +33,7 @@ class _DateListState extends State<DateList> {
         ),
         InkWell(
           child: DateChips(
-            date: (DateTime.now().day - 1).toString(),
-            month: AppConstants.months[DateTime.now().month],
+            date: (DateTime.now().subtract(const Duration(days: 1))),
             isSelected: selectedIndex == 1,
           ),
           onTap: () {
@@ -46,8 +44,7 @@ class _DateListState extends State<DateList> {
         ),
         InkWell(
           child: DateChips(
-            date: (DateTime.now().day - 0).toString(),
-            month: AppConstants.months[DateTime.now().month],
+            date: (DateTime.now().subtract(const Duration(days: 0))),
             isSelected: selectedIndex == 2,
           ),
           onTap: () {
@@ -58,8 +55,7 @@ class _DateListState extends State<DateList> {
         ),
         InkWell(
           child: DateChips(
-            date: (DateTime.now().day + 1).toString(),
-            month: AppConstants.months[DateTime.now().month],
+            date: (DateTime.now().add(const Duration(days: 1))),
             isSelected: selectedIndex == 3,
           ),
           onTap: () {
@@ -70,8 +66,7 @@ class _DateListState extends State<DateList> {
         ),
         InkWell(
           child: DateChips(
-            date: (DateTime.now().day + 2).toString(),
-            month: AppConstants.months[DateTime.now().month],
+            date: (DateTime.now().add(const Duration(days: 2))),
             isSelected: selectedIndex == 4,
           ),
           onTap: () {
@@ -82,8 +77,7 @@ class _DateListState extends State<DateList> {
         ),
         InkWell(
           child: DateChips(
-            date: (DateTime.now().day + 3).toString(),
-            month: AppConstants.months[DateTime.now().month],
+            date: (DateTime.now().add(const Duration(days: 3))),
             isSelected: selectedIndex == 5,
           ),
           onTap: () {
@@ -99,12 +93,10 @@ class _DateListState extends State<DateList> {
 
 class DateChips extends StatelessWidget {
   final bool isSelected;
-  final String date;
-  final String month;
+  final DateTime date;
   const DateChips({
     super.key,
     required this.date,
-    required this.month,
     required this.isSelected,
   });
 
@@ -121,13 +113,13 @@ class DateChips extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            date,
+            (date.day > 9) ? date.day.toString() : '0${date.day}',
             style: AppTheme.primaryHeadingTextSmall.copyWith(
               color: isSelected ? AppTheme.whiteColor : AppTheme.primaryColor,
             ),
           ),
           Text(
-            month,
+            AppConstants.months[date.month],
             style: AppTheme.primaryHeadingTextSmall.copyWith(
               color: isSelected ? AppTheme.whiteColor : AppTheme.primaryColor,
             ),

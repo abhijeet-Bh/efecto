@@ -166,23 +166,9 @@ class _HomeViewState extends State<HomeView> {
                                     const SizedBox(
                                       width: 10,
                                     ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(50),
-                                        color: Colors.red,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 4.0, horizontal: 24.0),
-                                        child: Text(
-                                          "High",
-                                          style: AppTheme.primaryBodyTextSmall
-                                              .copyWith(
-                                            fontSize: 12,
-                                            color: AppTheme.whiteColor,
-                                          ),
-                                        ),
-                                      ),
+                                    PriorityChip(
+                                      priority:
+                                          TaskData.taskList[index].priority,
                                     )
                                   ],
                                 ),
@@ -194,6 +180,42 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PriorityChip extends StatelessWidget {
+  final int priority;
+  const PriorityChip({
+    super.key,
+    required this.priority,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        color: (priority == 2)
+            ? Colors.red
+            : (priority == 1)
+                ? Colors.orangeAccent
+                : Colors.green,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 24.0),
+        child: Text(
+          (priority == 2)
+              ? "High"
+              : (priority == 1)
+                  ? "Medium"
+                  : "Low",
+          style: AppTheme.primaryBodyTextSmall.copyWith(
+            fontSize: 12,
+            color: AppTheme.whiteColor,
           ),
         ),
       ),
