@@ -1,6 +1,10 @@
 import 'package:efecto/core/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../../../core/task_data_box.dart';
+import '../../../../core/task_model.dart';
 
 class AddItemPopup extends StatefulWidget {
   final Function(String title, int priority, int duration, bool isComplete,
@@ -14,6 +18,7 @@ class AddItemPopup extends StatefulWidget {
 
 class _AddItemPopupState extends State<AddItemPopup> {
   final DateFormat formatter = DateFormat('dd-MM-yyyy');
+  var uuid = const Uuid();
 
   late String _title;
   late int _priority;
@@ -153,7 +158,33 @@ class _AddItemPopupState extends State<AddItemPopup> {
                     ),
                   ),
                 ),
-                onTap: () => Navigator.pop(context),
+                onTap: () {
+                  // BlocProvider.of<HomeBloc>(context).add(
+                  //   AddTasksEvent(
+                  //     TaskModel(
+                  //       uuid.v1(),
+                  //       _title,
+                  //       _priority,
+                  //       _duration,
+                  //       _isComplete,
+                  //       _date,
+                  //     ),
+                  //   ),
+                  // );
+                  // debugPrint(_isComplete.toString());
+                  TaskDataBox.storeNewTask(
+                    TaskModel(
+                      uuid.v1(),
+                      _title,
+                      _priority,
+                      _duration,
+                      _isComplete,
+                      _date,
+                      0,
+                    ),
+                  );
+                  Navigator.pop(context);
+                },
               )
             ],
           ),

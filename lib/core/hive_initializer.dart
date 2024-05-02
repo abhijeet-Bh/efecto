@@ -1,7 +1,6 @@
+import 'package:efecto/core/task_data_box.dart';
 import 'package:efecto/core/task_model.dart';
 import 'package:hive_flutter/adapters.dart';
-
-import 'auth_data_box.dart';
 
 Future<void> initializeHive() async {
   await Hive.initFlutter();
@@ -13,7 +12,7 @@ Future<void> initializeHive() async {
 
   // Open Hive boxes or perform other initialization tasks
   // AuthTokenBox.setBox(await Hive.openBox('authBox'));
-  UserInfoBox.setBox(await Hive.openBox<TaskModel>('tasks'));
+  TaskDataBox.setBox(await Hive.openBox<TaskModel>('tasks'));
 
   // Add more boxes or initialization steps as needed
 }

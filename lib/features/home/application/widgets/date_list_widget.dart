@@ -1,4 +1,6 @@
+import 'package:efecto/features/home/application/home_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants.dart';
 import '../../../../core/theme.dart';
@@ -29,6 +31,8 @@ class _DateListState extends State<DateList> {
             setState(() {
               selectedIndex = 0;
             });
+            BlocProvider.of<HomeBloc>(context).add(LoadTasksEvent(
+                DateTime.now().subtract(const Duration(days: 2))));
           },
         ),
         InkWell(
@@ -37,6 +41,8 @@ class _DateListState extends State<DateList> {
             isSelected: selectedIndex == 1,
           ),
           onTap: () {
+            BlocProvider.of<HomeBloc>(context).add(LoadTasksEvent(
+                DateTime.now().subtract(const Duration(days: 1))));
             setState(() {
               selectedIndex = 1;
             });
@@ -44,13 +50,15 @@ class _DateListState extends State<DateList> {
         ),
         InkWell(
           child: DateChips(
-            date: (DateTime.now().subtract(const Duration(days: 0))),
+            date: (DateTime.now()),
             isSelected: selectedIndex == 2,
           ),
           onTap: () {
             setState(() {
               selectedIndex = 2;
             });
+            BlocProvider.of<HomeBloc>(context)
+                .add(LoadTasksEvent(DateTime.now()));
           },
         ),
         InkWell(
@@ -62,6 +70,8 @@ class _DateListState extends State<DateList> {
             setState(() {
               selectedIndex = 3;
             });
+            BlocProvider.of<HomeBloc>(context).add(
+                LoadTasksEvent(DateTime.now().add(const Duration(days: 1))));
           },
         ),
         InkWell(
@@ -73,6 +83,8 @@ class _DateListState extends State<DateList> {
             setState(() {
               selectedIndex = 4;
             });
+            BlocProvider.of<HomeBloc>(context).add(
+                LoadTasksEvent(DateTime.now().add(const Duration(days: 2))));
           },
         ),
         InkWell(
@@ -84,6 +96,8 @@ class _DateListState extends State<DateList> {
             setState(() {
               selectedIndex = 5;
             });
+            BlocProvider.of<HomeBloc>(context).add(
+                LoadTasksEvent(DateTime.now().add(const Duration(days: 3))));
           },
         ),
       ],

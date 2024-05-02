@@ -5,17 +5,19 @@ part 'task_model.g.dart';
 @HiveType(typeId: 0)
 class TaskModel {
   @HiveField(0)
-  final String id;
+  String id;
   @HiveField(1)
-  final String title;
+  String title;
   @HiveField(2)
-  final int priority;
+  int priority;
   @HiveField(3)
-  final int duration;
+  int duration;
   @HiveField(4)
-  final bool isComplete;
+  bool isComplete;
   @HiveField(5)
-  final DateTime date;
+  DateTime date;
+  @HiveField(6)
+  int progress;
 
   TaskModel(
     this.id,
@@ -24,5 +26,6 @@ class TaskModel {
     this.duration,
     this.isComplete,
     this.date,
+    this.progress,
   );
 }

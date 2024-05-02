@@ -1,7 +1,10 @@
 import 'package:efecto/core/assets.dart';
+import 'package:efecto/core/task_model.dart';
 import 'package:efecto/core/theme.dart';
-import 'package:efecto/features/home/data/TaskData.dart';
+import 'package:efecto/features/home/application/home_bloc.dart';
+import 'package:efecto/features/timer/application/views/timer_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../widgets/add_item_popup.dart';
@@ -19,6 +22,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
+    // TaskDataBox.clear();
     return Scaffold(
       backgroundColor: AppTheme.primaryLightColor,
       appBar: AppBar(
@@ -98,87 +102,167 @@ class _HomeViewState extends State<HomeView> {
                           },
                         );
                       },
+                    ).then(
+                      (value) => BlocProvider.of<HomeBloc>(context).add(
+                        LoadTasksEvent(
+                          DateTime.now(),
+                        ),
+                      ),
                     );
                   });
                 },
               ),
-              (TaskData.taskList.isEmpty)
-                  ? const EmptyTodoWidget()
-                  : Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (ctx, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 14.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: AppTheme.whiteColor,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(14.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            height: 22,
-                                            width: 22,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              color: AppTheme.primaryLightColor,
+              BlocConsumer<HomeBloc, HomeState>(
+                listener: (BuildContext context, Object? state) {
+                  if (state is HomeError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.redAccent,
+                        content: Text(
+                          "Something went wrong!",
+                        ),
+                      ),
+                    );
+                  }
+                },
+                builder: (BuildContext context, state) {
+                  if (state is HomeInitial) {
+                    BlocProvider.of<HomeBloc>(context)
+                        .add(LoadTasksEvent(DateTime.now()));
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: AppTheme.primaryColor,
+                        backgroundColor: AppTheme.primaryLightColor,
+                        strokeCap: StrokeCap.round,
+                      ),
+                    );
+                  } else if (state is HomeLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: AppTheme.primaryColor,
+                        backgroundColor: AppTheme.primaryLightColor,
+                        strokeCap: StrokeCap.round,
+                      ),
+                    );
+                  } else if (state is HomeLoaded) {
+                    return (state.tasks == null || state.tasks!.isEmpty)
+                        ? const EmptyTodoWidget()
+                        : Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemBuilder: (ctx, index) {
+                                TaskModel task = state.tasks![index];
+                                // debugPrint(task.isComplete.toString());
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 14.0),
+                                  child: InkWell(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: AppTheme.whiteColor,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(14.0),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    height: 22,
+                                                    width: 22,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      color: (task.isComplete)
+                                                          ? AppTheme
+                                                              .primaryColor
+                                                          : AppTheme
+                                                              .primaryLightColor,
+                                                    ),
+                                                    child: (task.isComplete)
+                                                        ? Center(
+                                                            child: SvgPicture
+                                                                .asset(Assets
+                                                                    .circleTickIcon),
+                                                          )
+                                                        : const SizedBox(),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        task.title,
+                                                        style: AppTheme
+                                                            .primaryHeadingTextMedium
+                                                            .copyWith(
+                                                          color: AppTheme
+                                                              .secondaryLightColor,
+                                                          decoration: (task
+                                                                  .isComplete)
+                                                              ? TextDecoration
+                                                                  .lineThrough
+                                                              : TextDecoration
+                                                                  .none,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        '${task.duration.toString()} minutes',
+                                                        style: AppTheme
+                                                            .primaryBodyTextSmall
+                                                            .copyWith(
+                                                          fontSize: 12,
+                                                          color: AppTheme
+                                                              .secondaryLightColor,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                TaskData.taskList[index].title,
-                                                style: AppTheme
-                                                    .primaryHeadingTextMedium
-                                                    .copyWith(
-                                                        color: AppTheme
-                                                            .secondaryLightColor),
-                                              ),
-                                              Text(
-                                                '${TaskData.taskList[index].duration.toString()} minutes',
-                                                style: AppTheme
-                                                    .primaryBodyTextSmall
-                                                    .copyWith(
-                                                  fontSize: 12,
-                                                  color: AppTheme
-                                                      .secondaryLightColor,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            PriorityChip(
+                                              priority: task.priority,
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                    const SizedBox(
-                                      width: 10,
+                                    onTap: () => Navigator.pushNamed(
+                                      context,
+                                      TimerScreen.routeName,
+                                      arguments: {'task': task},
                                     ),
-                                    PriorityChip(
-                                      priority:
-                                          TaskData.taskList[index].priority,
-                                    )
-                                  ],
-                                ),
-                              ),
+                                  ),
+                                );
+                              },
+                              itemCount: state.tasks!.length,
                             ),
                           );
-                        },
-                        itemCount: TaskData.taskList.length,
+                  } else {
+                    return const Center(
+                      child: Text(
+                        "Something went Wrong!",
+                        style: AppTheme.primaryHeadingTextMedium,
+                        textAlign: TextAlign.center,
                       ),
-                    ),
+                    );
+                  }
+                },
+              ),
             ],
           ),
         ),

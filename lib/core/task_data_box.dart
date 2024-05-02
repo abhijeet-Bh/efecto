@@ -1,24 +1,57 @@
+import 'package:efecto/core/task_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class UserInfoBox {
-  static const _name = 'accessToken';
-  static const _regNum = 'refreshToken';
+class TaskDataBox {
+  static late Box<TaskModel> _box;
 
-  static late Box _box;
-
-  static setBox(Box box) {
+  static setBox(Box<TaskModel> box) {
     _box = box;
   }
 
-  static String? get name => _box.get(_name);
+  static Future<bool> storeNewTask(TaskModel task) async {
+    try {
+      await _box.put(task.id, task);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
-  static String get regNum => _box.get(_regNum);
+  static Future<List<TaskModel>?> ageAllTasks(DateTime date) async {
+    List<TaskModel> tasks = [];
+    var taskList = _box.values;
 
-  static Future<void> storeUserInfo(String name, String reg) async {
-    await Future.wait([
-      _box.put(_name, name),
-      _box.put(_regNum, reg),
-    ]);
+    for (var task in taskList) {
+      if (task.date.day == date.day &&
+          task.date.month == date.month &&
+          task.date.year == date.year) {
+        tasks.add(task);
+      }
+    }
+
+    return tasks;
+  }
+
+  static Future<TaskModel?> getSingleTask(String id) async {
+    return _box.get(id);
+  }
+
+  static Future<bool> updateTask(TaskModel task) async {
+    try {
+      await _box.put(task.id, task);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<bool> deleteTask(String id) async {
+    try {
+      await _box.delete(id);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   static Future<void> clear() async {
