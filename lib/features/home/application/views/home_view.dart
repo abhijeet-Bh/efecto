@@ -2,11 +2,13 @@ import 'package:efecto/core/assets.dart';
 import 'package:efecto/core/task_model.dart';
 import 'package:efecto/core/theme.dart';
 import 'package:efecto/features/home/application/home_bloc.dart';
+import 'package:efecto/features/initialscreens/application/views/login_view.dart';
 import 'package:efecto/features/timer/application/views/timer_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../initialscreens/data/repositories/auth_repository.dart';
 import '../widgets/add_item_popup.dart';
 import '../widgets/date_list_widget.dart';
 import '../widgets/empty_todo_widget.dart';
@@ -18,6 +20,8 @@ class HomeView extends StatefulWidget {
   @override
   State<HomeView> createState() => _HomeViewState();
 }
+
+AuthRepo authRepo = AuthRepo();
 
 class _HomeViewState extends State<HomeView> {
   @override
@@ -40,6 +44,23 @@ class _HomeViewState extends State<HomeView> {
           style: AppTheme.primaryHeadingTextLarge,
         ),
         centerTitle: false,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              showDialog(
+                context: context,
+                builder: (context) => const AlertDialog(
+                  title: Text('Lout out!'),
+                  content: Text('Logging you out...!!'),
+                ),
+              );
+              Future.delayed(const Duration(seconds: 3));
+              await authRepo.signOut();
+              Navigator.pushReplacementNamed(context, LoginView.routeName);
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -245,6 +266,14 @@ class _HomeViewState extends State<HomeView> {
                                       context,
                                       TimerScreen.routeName,
                                       arguments: {'task': task},
+                                    ).then(
+                                      (value) =>
+                                          BlocProvider.of<HomeBloc>(context)
+                                              .add(
+                                        LoadTasksEvent(
+                                          DateTime.now(),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 );
